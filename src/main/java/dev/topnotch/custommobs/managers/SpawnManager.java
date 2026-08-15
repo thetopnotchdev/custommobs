@@ -8,7 +8,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
@@ -24,18 +23,10 @@ public class SpawnManager {
     private final MobManager mobManager;
     private long lastSpawnDay = -1;
 
-    public SpawnManager(CustomMobsPlugin plugin, MobManager mobManager) {
-        this.plugin = plugin;
-        this.mobManager = mobManager;
-    }
+    public SpawnManager(CustomMobsPlugin plugin, MobManager mobManager) { this.plugin = plugin; this.mobManager = mobManager; }
 
     public void start() {
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                checkDailySpawn();
-            }
-        }.runTaskTimer(plugin, 100L, 100L);
+        new BukkitRunnable() { @Override public void run() { checkDailySpawn(); } }.runTaskTimer(plugin, 100L, 100L);
     }
 
     private void checkDailySpawn() {
@@ -52,15 +43,15 @@ public class SpawnManager {
     public void spawnForRandomPlayer() {
         List<Player> players = new ArrayList<>(plugin.getServer().getOnlinePlayers());
         if (players.isEmpty()) return;
-
         Player target = players.get(ThreadLocalRandom.current().nextInt(players.size()));
-        CustomMob template = mobManager.randomMob();
-        if (template == null) return;
+        CustomMob mob = mobManager.randomMob();
+        if (mob == null) return;
+        spawn(findSpawnLocation(target), mob, mobManager.randomRarity());
+    }
 
-        Rarity rarity = mobManager.randomRarity();
-        Location location = findSpawnLocation(target);
+    public void spawn(Location location, CustomMob template, Rarity rarity) {
+        if (location.getWorld() == null) return;
         LivingEntity entity = (LivingEntity) location.getWorld().spawnEntity(location, template.baseType());
-
         String displayName = rarity.displayName() + " " + template.name();
         entity.customName(Component.text(displayName, rarity.color()).decoration(TextDecoration.BOLD, true));
         entity.setCustomNameVisible(true);
@@ -70,13 +61,12 @@ public class SpawnManager {
         if (entity.getAttribute(Attribute.MAX_HEALTH) != null) {
             double health = template.health() * rarity.powerMultiplier();
             entity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(health);
-            entity.setHealth(Math.min(health, entity.getAttribute(Attribute.MAX_HEALTH).getValue()));
+            entity.setHealth(health);
         }
-        if (entity.getAttribute(Attribute.ATTACK_DAMAGE) != null) {
+        if (entity.getAttribute(Attribute.ATTACK_DAMAGE) != null)
             entity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(template.damage() * rarity.powerMultiplier());
-        }
 
-        plugin.getServer().broadcast(Component.text("⚔ " + displayName + " has appeared!", rarity.color()));
+        plugin.getServer().broadcast(Component.text("A " + displayName + " has appeared!", rarity.color()));
     }
 
     private Location findSpawnLocation(Player player) {
@@ -85,8 +75,7 @@ public class SpawnManager {
             double angle = ThreadLocalRandom.current().nextDouble(Math.PI * 2);
             double distance = ThreadLocalRandom.current().nextDouble(15, 35);
             Location candidate = base.clone().add(Math.cos(angle) * distance, 0, Math.sin(angle) * distance);
-            int highest = candidate.getWorld().getHighestBlockYAt(candidate);
-            candidate.setY(highest + 1);
+            candidate.setY(candidate.getWorld().getHighestBlockYAt(candidate) + 1);
             if (candidate.getBlock().isPassable()) return candidate;
         }
         return base.add(0, 1, 0);
