@@ -1,5 +1,6 @@
 package dev.topnotch.custommobs;
 
+import dev.topnotch.custommobs.commands.CustomMobsCommand;
 import dev.topnotch.custommobs.listeners.ItemAbilityListener;
 import dev.topnotch.custommobs.listeners.ItemPassiveListener;
 import dev.topnotch.custommobs.listeners.MobDeathListener;
@@ -21,6 +22,7 @@ public class CustomMobsPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         mobKey = new NamespacedKey(this, "custom_mob");
         rarityKey = new NamespacedKey(this, "rarity");
         itemKey = new NamespacedKey(this, "custom_item");
@@ -32,6 +34,7 @@ public class CustomMobsPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new MobDeathListener(this), this);
         getServer().getPluginManager().registerEvents(new ItemAbilityListener(this), this);
         getServer().getPluginManager().registerEvents(new ItemPassiveListener(this), this);
+        if (getCommand("custommobs") != null) getCommand("custommobs").setExecutor(new CustomMobsCommand(this));
         spawnManager.start();
         getLogger().info("CustomMobs enabled - daily mob spawning started.");
     }
