@@ -11,7 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class MobManager {
     private final Map<String, CustomMob> mobs = new LinkedHashMap<>();
-
     public MobManager() { registerDefaults(); }
 
     private void registerDefaults() {
@@ -35,7 +34,7 @@ public class MobManager {
         register(new CustomMob("nether_warlord", "Nether Warlord", EntityType.WITHER_SKELETON, 550, 26, Rarity.LEGENDARY, "warlord_blade"));
         register(new CustomMob("end_reaper", "End Reaper", EntityType.ENDERMITE, 350, 20, Rarity.LEGENDARY, "reaper_sickle"));
         register(new CustomMob("ancient_warden", "Ancient Warden", EntityType.WARDEN, 700, 25, Rarity.MYTHIC, "ancient_core"));
-        register(new CustomMob("starforged", "Starforged", EntityType.GOLEM, 850, 30, Rarity.MYTHIC, "starforged_blade"));
+        register(new CustomMob("starforged", "Starforged", EntityType.SNOW_GOLEM, 850, 30, Rarity.MYTHIC, "starforged_blade"));
         register(new CustomMob("abyssal_king", "Abyssal King", EntityType.WITHER, 1200, 32, Rarity.MYTHIC, "abyssal_crown"));
         register(new CustomMob("celestial_beast", "Celestial Beast", EntityType.RAVAGER, 1500, 38, Rarity.MYTHIC, "celestial_hammer"));
     }
@@ -43,11 +42,7 @@ public class MobManager {
     public void register(CustomMob mob) { mobs.put(mob.id(), mob); }
     public CustomMob get(String id) { return mobs.get(id); }
     public Collection<CustomMob> all() { return mobs.values(); }
-
-    public CustomMob randomMob() {
-        if (mobs.isEmpty()) return null;
-        return mobs.values().stream().skip(ThreadLocalRandom.current().nextInt(mobs.size())).findFirst().orElse(null);
-    }
+    public CustomMob randomMob() { return mobs.isEmpty() ? null : mobs.values().stream().skip(ThreadLocalRandom.current().nextInt(mobs.size())).findFirst().orElse(null); }
 
     public Rarity randomRarity() {
         double total = 0;
