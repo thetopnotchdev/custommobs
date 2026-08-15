@@ -1,0 +1,4 @@
+name: CustomMobs
+version: 1.0.0
+main: dev.topnotch.custommobs.CustomMobsPlugin
+api-version: '1.21'
