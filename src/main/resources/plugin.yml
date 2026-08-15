@@ -2,3 +2,14 @@ name: CustomMobs
 version: 1.0.0
 main: dev.topnotch.custommobs.CustomMobsPlugin
 api-version: '1.21'
+author: TheTopNotchDev
+description: Daily rarity-based custom mobs and custom loot.
+commands:
+  custommobs:
+    description: Admin controls for CustomMobs
+    usage: /custommobs <spawn|list|reload>
+    permission: custommobs.admin
+permissions:
+  custommobs.admin:
+    description: Allows administration of CustomMobs
+    default: op
