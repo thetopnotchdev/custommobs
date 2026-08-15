@@ -1,5 +1,6 @@
 package dev.topnotch.custommobs;
 
+import dev.topnotch.custommobs.listeners.MobDeathListener;
 import dev.topnotch.custommobs.managers.CooldownManager;
 import dev.topnotch.custommobs.managers.ItemManager;
 import dev.topnotch.custommobs.managers.MobManager;
@@ -14,28 +15,30 @@ public class CustomMobsPlugin extends JavaPlugin {
     private SpawnManager spawnManager;
     private NamespacedKey mobKey;
     private NamespacedKey rarityKey;
+    private NamespacedKey itemKey;
 
     @Override
     public void onEnable() {
         mobKey = new NamespacedKey(this, "custom_mob");
         rarityKey = new NamespacedKey(this, "rarity");
+        itemKey = new NamespacedKey(this, "custom_item");
         mobManager = new MobManager();
         itemManager = new ItemManager();
+        itemManager.setPlugin(this);
         cooldownManager = new CooldownManager();
         spawnManager = new SpawnManager(this, mobManager);
+        getServer().getPluginManager().registerEvents(new MobDeathListener(this), this);
         spawnManager.start();
         getLogger().info("CustomMobs enabled - daily mob spawning started.");
     }
 
     @Override
-    public void onDisable() {
-        getLogger().info("CustomMobs disabled.");
-    }
-
+    public void onDisable() { getLogger().info("CustomMobs disabled."); }
     public MobManager mobManager() { return mobManager; }
     public ItemManager itemManager() { return itemManager; }
     public CooldownManager cooldownManager() { return cooldownManager; }
     public SpawnManager spawnManager() { return spawnManager; }
     public NamespacedKey mobKey() { return mobKey; }
     public NamespacedKey rarityKey() { return rarityKey; }
+    public NamespacedKey itemKey() { return itemKey; }
 }
