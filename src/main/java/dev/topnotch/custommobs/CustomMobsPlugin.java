@@ -1,5 +1,7 @@
 package dev.topnotch.custommobs;
 
+import dev.topnotch.custommobs.listeners.ItemAbilityListener;
+import dev.topnotch.custommobs.listeners.ItemPassiveListener;
 import dev.topnotch.custommobs.listeners.MobDeathListener;
 import dev.topnotch.custommobs.managers.CooldownManager;
 import dev.topnotch.custommobs.managers.ItemManager;
@@ -28,6 +30,8 @@ public class CustomMobsPlugin extends JavaPlugin {
         cooldownManager = new CooldownManager();
         spawnManager = new SpawnManager(this, mobManager);
         getServer().getPluginManager().registerEvents(new MobDeathListener(this), this);
+        getServer().getPluginManager().registerEvents(new ItemAbilityListener(this), this);
+        getServer().getPluginManager().registerEvents(new ItemPassiveListener(this), this);
         spawnManager.start();
         getLogger().info("CustomMobs enabled - daily mob spawning started.");
     }
