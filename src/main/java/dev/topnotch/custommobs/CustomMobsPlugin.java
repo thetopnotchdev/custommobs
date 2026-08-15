@@ -1,0 +1,1 @@
+package dev.topnotch.custommobs; import org.bukkit.plugin.java.JavaPlugin; public class CustomMobsPlugin extends JavaPlugin { @Override public void onEnable(){ getLogger().info("CustomMobs enabled"); } }
