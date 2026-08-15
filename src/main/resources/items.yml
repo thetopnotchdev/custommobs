@@ -1,0 +1,41 @@
+items:
+  forest_fang:
+    passive: 'Chance to gain Speed after hitting enemies'
+    ability: 'Lunge forward'
+    cooldown: 12
+  brute_club:
+    passive: 'Chance to slow enemies'
+    ability: 'Ground Smash'
+    cooldown: 15
+  frost_bow:
+    passive: 'Freeze targets briefly'
+    ability: 'Frost Shot'
+    cooldown: 10
+  void_blade:
+    passive: 'Movement boost on kills'
+    ability: 'Blink Teleport'
+    cooldown: 15
+  infernal_axe:
+    passive: 'Ignites enemies'
+    ability: 'Fire Burst'
+    cooldown: 20
+  ancient_core:
+    passive: 'Resistance while held'
+    ability: 'Ancient Shockwave'
+    cooldown: 30
+  stormbreaker:
+    passive: 'Lightning resistance'
+    ability: 'Chain Lightning'
+    cooldown: 25
+  soul_reaper:
+    passive: 'Lifesteal'
+    ability: 'Soul Drain'
+    cooldown: 22
+  abyss_trident:
+    passive: 'Water speed'
+    ability: 'Tidal Wave'
+    cooldown: 18
+  celestial_blade:
+    passive: 'Slow regeneration'
+    ability: 'Starfall'
+    cooldown: 35
